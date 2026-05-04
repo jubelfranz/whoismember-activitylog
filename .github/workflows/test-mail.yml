@@ -11,8 +11,8 @@ jobs:
       - name: Send Test Email
         uses: dawidd6/action-send-mail@v3
         with:
-          # Wir nutzen nun das Brevo Relay, das GitHub-Anfragen akzeptiert
-          server_address: ://brevo.com
+          # KORREKTUR: Nur der Hostname, ohne ://
+          server_address: smtp-relay.brevo.com
           server_port: 587
           secure: false
           username: ${{ secrets.MAIL_USERNAME }}
@@ -22,4 +22,6 @@ jobs:
           from: BuildHub Maker <${{ secrets.MAIL_USERNAME }}>
           body: |
             Connectivity Finalized!
-            The GitHub-to-Email bridge is now working via SMTP Relay.
+            The GitHub-to-Email bridge is now working via Brevo SMTP Relay.
+            
+            Repository: ${{ github.repository }}
