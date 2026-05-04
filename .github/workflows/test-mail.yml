@@ -1,0 +1,29 @@
+name: Test SMTP Connection
+
+on:
+  repository_dispatch:
+    types: [test_mail_trigger]
+
+jobs:
+  test_mail:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send Test Email
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: host47.ssl-net.net
+          server_port: 587
+          secure: false
+          username: ${{ secrets.MAIL_USERNAME }}
+          password: ${{ secrets.MAIL_PASSWORD }}
+          subject: "BuildHub Connectivity Test: ${{ github.event.client_payload.version }}"
+          to: support@einfachalles.at
+          from: BuildHub Maker <${{ secrets.MAIL_USERNAME }}>
+          body: |
+            Connectivity Check Successful!
+            
+            Repository: ${{ github.repository }}
+            Event Type: ${{ github.event_type }}
+            Timestamp: ${{ github.event.client_payload.message }}
+            
+            Your BuildHub is now successfully connected to this repository.
