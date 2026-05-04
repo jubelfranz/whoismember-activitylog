@@ -13,13 +13,12 @@ jobs:
         with:
           server_address: host47.ssl-net.net
           server_port: 587
-          secure: false # STARTTLS verwenden
-          # WICHTIG: Falls dein Passwort Sonderzeichen hat, 
-          # tippe es bei GitHub Secrets manuell ein!
+          secure: false
+          # WICHTIG: Ignoriert Zertifikatsfehler beim STARTTLS Handshake
+          ignore_cert: true
           username: ${{ secrets.MAIL_USERNAME }}
           password: ${{ secrets.MAIL_PASSWORD }}
-          subject: "BuildHub Final Debug Test"
+          subject: "BuildHub Connectivity Test"
           to: support@einfachalles.at
           from: support@einfachalles.at
-          # Dieser Parameter ist oft der Retter bei restriktiven Hostern:
-          connection_timeout: 20
+          body: "Connection established for ${{ github.repository }}"
