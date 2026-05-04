@@ -1,5 +1,4 @@
 name: Email Connection Test
-
 on:
   repository_dispatch:
     types: [test_mail_trigger]
@@ -12,12 +11,11 @@ jobs:
         uses: dawidd6/action-send-mail@v3
         with:
           server_address: host47.ssl-net.net
-          server_port: 465
-          secure: true
+          server_port: 587
+          # Manche Server blockieren SSL-Verbindungen von bekannten Cloud-IPs
+          secure: false 
           username: ${{ secrets.MAIL_USERNAME }}
           password: ${{ secrets.MAIL_PASSWORD }}
-          subject: "BuildHub Test"
+          subject: "BuildHub Final Test"
           to: support@einfachalles.at
-          # WICHTIG: Nur die nackte Adresse, kein Name!
           from: support@einfachalles.at
-          body: "Connection Successful for ${{ github.repository }}"
