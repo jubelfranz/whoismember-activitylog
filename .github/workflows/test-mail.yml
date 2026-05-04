@@ -11,14 +11,15 @@ jobs:
       - name: Send Test Email
         uses: dawidd6/action-send-mail@v3
         with:
-          server_address: host47.ssl-net.net
+          # Wir nutzen nun das Brevo Relay, das GitHub-Anfragen akzeptiert
+          server_address: ://brevo.com
           server_port: 587
           secure: false
-          # WICHTIG: Ignoriert Zertifikatsfehler beim STARTTLS Handshake
-          ignore_cert: true
           username: ${{ secrets.MAIL_USERNAME }}
           password: ${{ secrets.MAIL_PASSWORD }}
-          subject: "BuildHub Connectivity Test"
+          subject: "BuildHub SUCCESS: ${{ github.repository }}"
           to: support@einfachalles.at
-          from: support@einfachalles.at
-          body: "Connection established for ${{ github.repository }}"
+          from: BuildHub Maker <${{ secrets.MAIL_USERNAME }}>
+          body: |
+            Connectivity Finalized!
+            The GitHub-to-Email bridge is now working via SMTP Relay.
