@@ -1,4 +1,4 @@
-name: Test SMTP Connection
+name: Email Connection Test
 
 on:
   repository_dispatch:
@@ -7,25 +7,17 @@ on:
 jobs:
   test_mail:
     runs-on: ubuntu-latest
-    env:
-      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
     steps:
       - name: Send Test Email
-        uses: dawidd6/action-send-mail@v4
+        uses: dawidd6/action-send-mail@v3
         with:
-          # Wir nutzen jetzt die SMTPS Einstellungen aus deinem Bild
           server_address: host47.ssl-net.net
           server_port: 465
-          secure: true # Wichtig für Port 465 (SSL/TLS)
+          secure: true
           username: ${{ secrets.MAIL_USERNAME }}
           password: ${{ secrets.MAIL_PASSWORD }}
-          subject: "BuildHub Connectivity Test: ${{ github.repository }}"
+          subject: "BuildHub Test"
           to: support@einfachalles.at
-          # Wir setzen 'from' auf die nackte Email-Adresse für maximale Kompatibilität
-          from: ${{ secrets.MAIL_USERNAME }}
-          body: |
-            Connectivity Check Successful!
-            
-            Repository: ${{ github.repository }}
-            Server: host47.ssl-net.net (Port 465)
-            Status: Connection established via Node 24.
+          # WICHTIG: Nur die nackte Adresse, kein Name!
+          from: support@einfachalles.at
+          body: "Connection Successful for ${{ github.repository }}"
