@@ -1,4 +1,5 @@
-name: Email Connection Test
+name: Test SMTP Connection
+
 on:
   repository_dispatch:
     types: [test_mail_trigger]
@@ -12,10 +13,13 @@ jobs:
         with:
           server_address: host47.ssl-net.net
           server_port: 587
-          # Manche Server blockieren SSL-Verbindungen von bekannten Cloud-IPs
-          secure: false 
+          secure: false # STARTTLS verwenden
+          # WICHTIG: Falls dein Passwort Sonderzeichen hat, 
+          # tippe es bei GitHub Secrets manuell ein!
           username: ${{ secrets.MAIL_USERNAME }}
           password: ${{ secrets.MAIL_PASSWORD }}
-          subject: "BuildHub Final Test"
+          subject: "BuildHub Final Debug Test"
           to: support@einfachalles.at
           from: support@einfachalles.at
+          # Dieser Parameter ist oft der Retter bei restriktiven Hostern:
+          connection_timeout: 20
