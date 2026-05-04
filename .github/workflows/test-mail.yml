@@ -8,25 +8,24 @@ jobs:
   test_mail:
     runs-on: ubuntu-latest
     env:
-      # Verhindert die Node-Deprecation Warnung
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
     steps:
       - name: Send Test Email
         uses: dawidd6/action-send-mail@v4
         with:
+          # Wir nutzen jetzt die SMTPS Einstellungen aus deinem Bild
           server_address: host47.ssl-net.net
-          server_port: 587
-          secure: false
+          server_port: 465
+          secure: true # Wichtig für Port 465 (SSL/TLS)
           username: ${{ secrets.MAIL_USERNAME }}
           password: ${{ secrets.MAIL_PASSWORD }}
-          subject: "BuildHub Connectivity Test: ${{ github.event.client_payload.version }}"
+          subject: "BuildHub Connectivity Test: ${{ github.repository }}"
           to: support@einfachalles.at
-          # WICHTIG: Muss exakt MAIL_USERNAME entsprechen!
-          from: BuildHub Maker <${{ secrets.MAIL_USERNAME }}>
+          # Wir setzen 'from' auf die nackte Email-Adresse für maximale Kompatibilität
+          from: ${{ secrets.MAIL_USERNAME }}
           body: |
             Connectivity Check Successful!
             
             Repository: ${{ github.repository }}
-            Version: ${{ github.event.client_payload.version }}
-            
-            Your BuildHub is now connected and future-proof (Node 24).
+            Server: host47.ssl-net.net (Port 465)
+            Status: Connection established via Node 24.
