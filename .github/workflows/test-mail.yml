@@ -11,14 +11,20 @@ jobs:
       - name: Send Test Email
         uses: dawidd6/action-send-mail@v3
         with:
-          server_address: smtp-relay.brevo.com
+          # Wir nutzen Brevo, da dein Hoster Skripte blockiert
+          server_address: ://brevo.com
           server_port: 587
-          secure: false
-          # Wir nutzen die Secrets direkt
+          secure: false # STARTTLS ist Standard bei Port 587
+          
+          # Zugangsdaten aus den Secrets
           username: ${{ secrets.MAIL_USERNAME }}
           password: ${{ secrets.MAIL_PASSWORD }}
-          subject: "BuildHub Final Win"
+          
+          subject: "BuildHub SUCCESS: Cloud Mail active"
           to: support@einfachalles.at
-          # WICHTIG: Brevo verlangt oft, dass der Absender die registrierte E-Mail ist
-          from: ${{ secrets.MAIL_USERNAME }}
-          body: "GitHub to Brevo Connection Success!"
+          # WICHTIG: Die Absender-Adresse muss bei Brevo verifiziert sein!
+          from: support@einfachalles.at
+          body: |
+            Sieg! Die Mail-Brücke steht.
+            Dieser Versand erfolgt über Brevo, um die Hoster-Blockade zu umgehen.
+            Repo: ${{ github.repository }}
